@@ -7,16 +7,14 @@ export interface IColorChangerProps {
     changeColor(color: string): void;
 }
 
-class DumbColorChanger extends React.Component<IColorChangerProps> {
-    public render() {
-        const { changeColor, color } = this.props;
-        return (
-            <div>
-                <label>type a new color</label>
-                <input onChange={(e) => changeColor(e.target.value)} value={color} />
-            </div>
-        )
-    }
+const DumbColorChanger: React.FC<IColorChangerProps> = (props) => {
+    const { changeColor, color } = props;
+    return (
+        <div>
+            <label>type a new color</label>
+            <input onChange={(e) => changeColor(e.target.value)} value={color} />
+        </div>
+    )
 }
 
 const mapStateToProps = (state: IState) => ({
