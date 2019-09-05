@@ -1,18 +1,44 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { IState, IAction } from './App';
 
 export interface INameChangerProps {
     name: string;
-    onChange(name: string): void;
+    changeName(name: string): void;
 }
 
-export class NameChanger extends React.Component<INameChangerProps> {
+class DumbNameChanger extends React.Component<INameChangerProps> {
     public render() {
-        const {onChange, name} = this.props;
+        const { name, changeName } = this.props;
         return (
             <div>
                 <label>type a new name</label>
-                <input onChange={(e) => onChange(e.target.value)} value={name}/>
+                <input onChange={e => {
+                    const name = e.target.value;
+                    changeName(name);
+                }} 
+                value={name} />
             </div>
         )
     }
 }
+
+const mapStateToProps = (state: IState) => ({
+    name: state.name,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    changeName(name: string) {
+        const action: IAction = {
+            type: 'CHANGE_NAME',
+            payload: {
+                name,
+            }
+        };
+        dispatch(action);
+    }
+})
+
+const withRedux = connect(mapStateToProps, mapDispatchToProps);
+
+export const NameChanger = withRedux(DumbNameChanger);
